@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pulsar
+      POSTGRES_PASSWORD: pulsar_dev_password
+      POSTGRES_DB: pulsar_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pulsar_pg_data:/var/lib/postgresql/data
+
+volumes:
+  pulsar_pg_data:
