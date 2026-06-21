@@ -5,8 +5,8 @@ import bcrypt from "bcrypt";
 import { Router } from "express";
 import { z } from "zod";
 import StatusCodes from ".././globals/status_codes.js";
+import { Constants } from ".././globals/constants.js";
 
-const COST_FACTOR = 12;
 const ROUTER = Router();
 const PRISMA_CLIENT = new PrismaClient();
 
@@ -27,7 +27,7 @@ ROUTER.post("/signup", async (request, result) => {
 		} // if failed valid format, infrom requester
 
 		const { email, name, password} = signupRequest.data;
-		const hashedPassword = await bcrypt.hash(password, COST_FACTOR);
+		const hashedPassword = await bcrypt.hash(password, Constants.BCRYPT_COST_FACTOR);
 
 		const user = await PRISMA_CLIENT.user.create({
 			data: {
@@ -64,8 +64,8 @@ ROUTER.post("/signup", async (request, result) => {
 			return result.status(StatusCodes.USER_CREATION_FAILED).json({ error: "Invalid Data | Malformed Data" });
 		}
 		else { // we just don't know what happened here
-			console.error("Unexpected Error Occured whilst User Creation in Signup", error);
-			return result.status(StatusCodes.USER_CREATION_FAILED).json({ error: "Signup Failed for Unexpected Reasons" });
+			console.error("Unexpected Error Occured in Signup", error);
+			return result.status(StatusCodes.SIGNUP_FAILED).json({ error: "Signup Failed for Unexpected Reasons" });
 		}
 	}
 });
