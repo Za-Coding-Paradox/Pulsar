@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient, Prisma } from ".././generated/prisma/client.js";
+import { PrismaClient, Prisma } from "../.././generated/prisma/client.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Router } from "express";
@@ -37,9 +37,9 @@ ROUTER.post("/signup", async (request, result) => {
 			}
 		}); // trying to create a user
 		return result
-		.status(StatusCodes.USER_CREATION_SUCCESFUL)
+		.status(StatusCodes.SIGNUP_SUCCESSFUL)
 		.json({
-			message: "User Created Succesfully",
+			message: "Signup Successful",
 			userId: user.id
 		}); // if uesr creation is successful 
 	}

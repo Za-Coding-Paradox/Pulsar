@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient, Prisma } from ".././generated/prisma/client.js";
+import { PrismaClient, Prisma } from "../.././generated/prisma/client.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Router } from "express";
@@ -37,7 +37,7 @@ ROUTER.post("/login", async (request, result) => {
 			return result
 			.status(StatusCodes.USER_NOT_FOUND)
 			.json({
-				error: "User is not registered in the DataBase",
+				error: "Email or Password Entered is Incorrect | User is not registered in the DataBase",
 			})
 		}
 
@@ -46,11 +46,41 @@ ROUTER.post("/login", async (request, result) => {
 			return result
 			.status(StatusCodes.PASSWORD_VALIDATION_FAILED)
 			.json({
-				error: "Password Entered Is Incorrect"
+				error: "Email or Password Entered Is Incorrect"
 			});
 		}
+
+		const accessToken = jwt.sign(
+			{ userId: user.id},
+			Constants.JWT_ACCESS_SECRET,
+			{ expiresIn: Constants.ACCESS_TOKEN_EXPIRY }
+		);
+
+		const refreshToken = jwt.sign(
+			{ userId: user.id },
+			Constants.JWT_REFRESH_SECRET,
+			{ expiresIn: Constants.REFRESH_TOKEN_EXPIRY } 
+		);
+		
+		return result
+		.status(StatusCodes.LOGIN_SUCCESSFUL)
+		.json({
+			message: "Login Successful",
+			accessToken,
+			refreshToken,
+			user: { 
+				id: user.id,
+				email: user.email,
+				name: user.name
+			}
+		});
 	}
 	catch(error) {
+		if (error instanceof Prisma.PrismaClientInitializationError) {
+			console.error("Database connection failed:", error);
+			return result.status(StatusCodes.DB_CLIENT_INITIALIZATION_FAILED).json({ error: "Service temporarily unavailable" });
+		}	
+
 		console.error("Unexpected Error Occured Whilst Login", error);
 		return result
 		.status(StatusCodes.LOGIN_FAILED)
@@ -59,3 +89,5 @@ ROUTER.post("/login", async (request, result) => {
 		});
 	}
 })
+
+export default ROUTER;
