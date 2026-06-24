@@ -12,7 +12,7 @@ ROUTER.get("/:id", async (request, result) => {
 	try{
 		// GET /workspaces/:id — fetches a single workspace by its id from URL params
 		// id comes from the URL, not the body — GET requests don't carry a body
-		const { id } = request.params;
+		const { id } = request.params; // can only do this because "id" is in GET request url "/id"
 		const workspace = await PRISMA_CLIENT.workspace.findUnique({
 			where: {
 				id: id,

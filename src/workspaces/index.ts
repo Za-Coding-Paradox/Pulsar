@@ -6,5 +6,6 @@ import getRouter from "./get.js";
 const workspaceRouter= Router();
 workspaceRouter.use(createRouter);
 workspaceRouter.use(requireWorkspaceMemberRole, getRouter);
+workspaceRouter.use(listRouter);
 
 export default workspaceRouter;
