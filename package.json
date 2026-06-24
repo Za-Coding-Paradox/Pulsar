@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
-		"build": "tsc && copyfiles -u 1 generated/**/* dist/",
+		"build": "tsc",
 		"start": "node dist/index.js"
 	},
 	"keywords": [],
@@ -17,7 +17,6 @@
 		"@types/express": "^5.0.6",
 		"@types/jsonwebtoken": "^9.0.10",
 		"@types/node": "^26.0.0",
-		"copyfiles": "^2.4.1",
 		"prisma": "^6.19.3",
 		"tsx": "^4.22.4",
 		"typescript": "^6.0.3"

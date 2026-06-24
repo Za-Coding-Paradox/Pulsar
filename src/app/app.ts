@@ -1,12 +1,18 @@
 import express from "express";
 import authRouter from ".././auth/index.js"
+import { requireAuth } from ".././middleware/require_auth.js";
 
 // returns an application object, that works as a server object (routing, and api calls)
 const app = express();
 
 // Automatically parse incoming requrests into objects. Assumes that requests are in JSON format
 app.use(express.json());
-app.use(authRouter); // Adds a ROUTER to auth endpoints to APP
+app.use("/auth", authRouter); // Adds a ROUTER to auth endpoints to APP
+
+app.get("/protected", requireAuth, (req, res) => {
+  res.json({ message: "You are in", userId: req.user?.userId });
+});
+
 
 /*
 This entire segment was written at the start of the program to understand express.
@@ -33,15 +39,5 @@ app.post("/", (request, result) => {
 	}); // sending back acknowledgment signal
 });
 */
-
-const PORT = process.env.port ?? 3000; // looks for an env file, and gets the port, else chooses default port: 3000
-app.listen(PORT, () => {
-	console.log(`Pulsar API is running on PORT{ ${PORT} }`);
-}); // this tells OS to get any trafic comming to the PORT, hand it to this thread
-// this exists as an FD on some OS socket.
-// this starts the event loop, listening for connections
-// when connections are built, the handlers for GET & POST can be used
-// just for info, handlers basically mean that the routes/endpoints are mapped to internal routing table on the app server object
-// also, the all data comes to the fd, and the the express module handles all requests by comparing them to the internal endpoint/route table
 
 export default app; // exports the app (reveals the endpoint for the app to be used in main index.ts)

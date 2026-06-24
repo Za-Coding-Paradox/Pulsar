@@ -15,7 +15,7 @@ export function requireAuth(request: Request, response: Response, nextFunc: Next
 		   Splits "Bearer eyJhbG..." on the space, giving ["Bearer", "eyJhbG..."], then takes index [1] — the actual token. 
 		   The ?. means "only call .split() if authHeader isn't undefined" — if the header was missing, token is undefined rather than crashing.
 		   */
-		const authToken = authHeader?.split("")[1];
+		const authToken = authHeader?.split(" ")[1];
 
 		if (!authToken) {
 			response	
