@@ -1,7 +1,5 @@
 import express from "express";
 import { PrismaClient, Prisma } from "../.././generated/prisma/client.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import { Router } from "express";
 import { z } from "zod";
 import StatusCodes from ".././globals/status_codes.js";
@@ -14,7 +12,7 @@ const createWorkspaceSchema = z.object({
 	name: z.string().min(4).max(100),
 });
 
-ROUTER.post("/create", async(request, result) => {
+ROUTER.post("/", async(request, result) => {
  	try {
 		const createRequest = createWorkspaceSchema.safeParse(request.body);
 		if(!createRequest.success) {

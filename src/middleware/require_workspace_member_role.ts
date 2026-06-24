@@ -6,7 +6,7 @@ import { PrismaClient, Prisma } from "../.././generated/prisma/client.js";
 
 const PRISMA_CLIENT = new PrismaClient();
 
-// Added the "async" keyword here so you can use "await" inside
+// Added the "async" keyword here so we can use "await" inside
 async function requireWorkspaceMemberRole(
 	request: Request, 
 	response: Response, 
@@ -24,12 +24,12 @@ async function requireWorkspaceMemberRole(
 		} // check for TS compiler to allow search in PrismaClient "findFirst"
 		// this ensures that userId does exist, and is not undefined
 
-		const workspaceName = request.body.name; 
-		if (!workspaceName) {
+		const workspaceId = request.body.id; 
+		if (!workspaceId) {
 			response 
 			.status(StatusCodes.INVALID_WORKSPACE_GET_REQUEST)
 			.json({
-				error: "Workspace Name not Found",
+				error: "Workspace ID not Found",
 			});
 			return; 
 		} 
@@ -39,7 +39,7 @@ async function requireWorkspaceMemberRole(
 			where: {
 				userId: userId,
 				workspace: {
-					name: workspaceName
+					id: workspaceId
 				},
 			},
 		});

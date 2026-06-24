@@ -1,13 +1,20 @@
 import express from "express";
 import authRouter from ".././auth/index.js"
 import workspaceRouter from ".././workspaces/index.js"; 
+import requireAuth from "../middleware/require_auth.js";
+
 // returns an application object, that works as a server object (routing, and api calls)
 const app = express();
 
 // Automatically parse incoming requrests into objects. Assumes that requests are in JSON format
 app.use(express.json());
+
+// public routes for authentication
 app.use("/auth", authRouter); // Adds a ROUTER to auth endpoints to APP
-app.use("/workspace", workspaceRouter);
+// protected routes for workspace manipulations
+app.use("/workspace", requireAuth, workspaceRouter);
+
+export default app; // exports the app (reveals the endpoint for the app to be used in main index.ts)
 
 /*
 This entire segment was written at the start of the program to understand express.
@@ -34,5 +41,3 @@ app.post("/", (request, result) => {
 	}); // sending back acknowledgment signal
 });
 */
-
-export default app; // exports the app (reveals the endpoint for the app to be used in main index.ts)

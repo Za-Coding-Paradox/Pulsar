@@ -1,7 +1,5 @@
 import express from "express";
 import { PrismaClient, Prisma } from "../.././generated/prisma/client.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import { Router } from "express";
 import { z } from "zod";
 import StatusCodes from ".././globals/status_codes.js";
@@ -10,25 +8,14 @@ import { Constants } from ".././globals/constants.js"
 const ROUTER = Router();
 const PRISMA_CLIENT = new PrismaClient();
 
-const getWorkspaceSchema = z.object({
-	name: z.string().min(4).max(100),
-});
-
-ROUTER.post("/get", async (request, result) => {
+ROUTER.get("/:id", async (request, result) => {
 	try{
-		const getWorkspaceRequest = getWorkspaceSchema.safeParse(request.body);
-		if (!getWorkspaceRequest.success) {
-			return result
-			.status(StatusCodes.INVALID_WORKSPACE_GET_REQUEST)
-			.json({
-				error: "Get Workspace Request is in Invalid Format.",
-			});
-		}
-
-		const { name } = getWorkspaceRequest.data;
+		// GET /workspaces/:id — fetches a single workspace by its id from URL params
+		// id comes from the URL, not the body — GET requests don't carry a body
+		const { id } = request.params;
 		const workspace = await PRISMA_CLIENT.workspace.findUnique({
 			where: {
-				name: name,
+				id: id,
 			},
 		});
 
