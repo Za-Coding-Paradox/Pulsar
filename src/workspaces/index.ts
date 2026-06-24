@@ -5,7 +5,7 @@ import requireWorkspaceMemberRole from ".././middleware/require_workspace_member
 import getRouter from "./get.js";
 
 const workspaceRouter= Router();
-workspaceRouter.use("/workspace", requireAuth, createRouter);
-workspaceRouter.use("/workspace", requireAuth, requireWorkspaceMemberRole, getRouter);
+workspaceRouter.use(requireAuth, createRouter);
+workspaceRouter.use(requireAuth, requireWorkspaceMemberRole, getRouter);
 
 export default workspaceRouter;

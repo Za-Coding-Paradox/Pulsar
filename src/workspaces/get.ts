@@ -16,7 +16,7 @@ const getWorkspaceSchema = z.object({
 
 ROUTER.post("/get", async (request, result) => {
 	try{
-		const getWorkspaceRequest = getWorkspaceSchema.safeParse(request);
+		const getWorkspaceRequest = getWorkspaceSchema.safeParse(request.body);
 		if (!getWorkspaceRequest.success) {
 			return result
 			.status(StatusCodes.INVALID_WORKSPACE_GET_REQUEST)
