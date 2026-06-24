@@ -2,6 +2,7 @@ import { Router } from "express";
 import createRouter from "./create.js";
 import requireWorkspaceMemberRole from ".././middleware/require_workspace_member_role.js";
 import getRouter from "./get.js";
+import listRouter from "./list.js";
 
 const workspaceRouter= Router();
 workspaceRouter.use(createRouter);
