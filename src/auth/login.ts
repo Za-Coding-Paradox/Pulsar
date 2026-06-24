@@ -37,7 +37,7 @@ ROUTER.post("/login", async (request, result) => {
 			return result
 			.status(StatusCodes.USER_NOT_FOUND)
 			.json({
-				error: "Email or Password Entered is Incorrect | User is not registered in the DataBase",
+				error: "Email or Password Entered is Incorrect | User is not Registered in the DataBase",
 			})
 		}
 

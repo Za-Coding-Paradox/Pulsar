@@ -1,6 +1,5 @@
 import express from "express";
 import { PrismaClient, Prisma } from "../.././generated/prisma/client.js";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import { z } from "zod";
@@ -47,17 +46,17 @@ ROUTER.post("/signup", async (request, result) => {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			switch (error.code) {
 				case "P2002": // unique constraint violation
-					return result.status( StatusCodes.USER_CREATION_FAILED ).json({ error: "Email already in use" });
+					return result.status( StatusCodes.USER_CREATION_FAILED ).json({ error: "Email Already in Use" });
 
 				case "P2003": // foreign key constraint failed
-					return result.status(StatusCodes.USER_CREATION_FAILED ).json({ error: "Referenced record doesn't exist" });
+					return result.status(StatusCodes.USER_CREATION_FAILED ).json({ error: "Referenced Record Doesn't Exist" });
 
 				case "P2025": // record to update/delete not found
-					return result.status( StatusCodes.USER_CREATION_FAILED ).json({ error: "Record not found" });
+					return result.status( StatusCodes.USER_CREATION_FAILED ).json({ error: "Record not Found" });
 
 				default:
 					console.error("Unhandled Prisma error:", error.code, error.message);
-				return result.status(StatusCodes.USER_CREATION_FAILED).json({ error: "Database error" });
+				return result.status(StatusCodes.USER_CREATION_FAILED).json({ error: "Database Error" });
 			}		
 		}
 		else if (error instanceof Prisma.PrismaClientValidationError) { // this is very rare if zod passes the format
