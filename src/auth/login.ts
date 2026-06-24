@@ -83,7 +83,7 @@ ROUTER.post("/login", async (request, result) => {
 
 		console.error("Unexpected Error Occured Whilst Login", error);
 		return result
-		.status(StatusCodes.LOGIN_FAILED)
+		.status(StatusCodes.INTERNAL_SERVER_ERROR)
 		.json({
 			error: "Login Failed due to Unexpected Reasons"
 		});
