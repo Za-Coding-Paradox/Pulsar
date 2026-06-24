@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { Constants } from ".././globals/constants.js";
 import StatusCodes from ".././globals/status_codes.js";
 
-export function requireAuth(request: Request, response: Response, nextFunc: NextFunction): void {
+function requireAuth(request: Request, response: Response, nextFunc: NextFunction): void {
 	try {
 		/*
 		   Reads the raw Authorization header from the request. 
@@ -65,3 +65,5 @@ export function requireAuth(request: Request, response: Response, nextFunc: Next
 		})
 	}
 }
+
+export default requireAuth;
