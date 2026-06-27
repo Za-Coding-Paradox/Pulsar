@@ -1,7 +1,15 @@
+import "dotenv/config";
+
+function requireEnv(key: string): string {
+  const value = process.env[key];
+  if (!value) throw new Error(`Missing required environment variable: ${key}`);
+  return value;
+}
+
 export const Constants = {
-	BCRYPT_COST_FACTOR: 12,
-	JWT_ACCESS_SECRET: "11b29add7ea7916fc88987223ff2556949af4ed7bb39aa42666b82d0ea19784af57bb93b30fec6533ae69329f86306e6fcc170e6e6c0688f21d382908bb3a641",
-	JWT_REFRESH_SECRET: "93a160496ca4fabc81184a7956546b70380604dca103fa6423665dc5c37efcbc74534c934a1c6091b52b07f216c4b896ff1a8ad867b4f7a3c0274faddb9a5b4c",
-	REFRESH_TOKEN_EXPIRY: "1d",
-	ACCESS_TOKEN_EXPIRY: "15m"
+  BCRYPT_COST_FACTOR: 12,
+  JWT_ACCESS_SECRET: requireEnv("JWT_ACCESS_SECRET"),
+  JWT_REFRESH_SECRET: requireEnv("JWT_REFRESH_SECRET"),
+  REFRESH_TOKEN_EXPIRY: "1d",
+  ACCESS_TOKEN_EXPIRY: "15m",
 } as const;

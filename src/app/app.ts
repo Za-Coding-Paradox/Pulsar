@@ -1,20 +1,104 @@
 import express from "express";
-import authRouter from ".././auth/index.js"
-import workspaceRouter from ".././workspaces/index.js"; 
-import requireAuth from "../middleware/require_auth.js";
+import authRouter from "../auth/index.js";
+import workspaceRouter from "../workspaces/index.js";
+import projectRouter from "../projects/index.js";
+import requireAuth from ".././middleware/require_auth.js";
+import requireWorkspaceMemberRole from ".././middleware/require_workspace_member_role.js";
+import { requireWorkspaceRole } from ".././middleware/require_workspace_crud_role.js";
 
 // returns an application object, that works as a server object (routing, and api calls)
 const app = express();
 
-// Automatically parse incoming requrests into objects. Assumes that requests are in JSON format
+// Automatically parse incoming requests into objects. Assumes that requests are in JSON format
 app.use(express.json());
 
-// public routes for authentication
-app.use("/auth", authRouter); // Adds a ROUTER to auth endpoints to APP
-// protected routes for workspace manipulations
-app.use("/workspace", requireAuth, workspaceRouter);
+// ── Public Routes ─────────────────────────────────────────────────────────────
+// no auth required — signup, login, refresh
+app.use("/auth", authRouter);
 
-export default app; // exports the app (reveals the endpoint for the app to be used in main index.ts)
+// ── Workspace Routes ──────────────────────────────────────────────────────────
+// requireAuth: must be logged in
+// no role check here — workspace-level operations handle their own role checks internally
+// (e.g. delete workspace checks for OWNER inside the route)
+app.use("/workspaces", requireAuth, workspaceRouter);
+app.delete(
+	"/workspaces/:id",
+	requireAuth,
+	requireWorkspaceRole("OWNER"),
+	workspaceRouter
+);
+
+// ── Project Routes ────────────────────────────────────────────────────────────
+// GET/POST (list, get, create) — any workspace member
+app.use(
+  "/workspaces/:workspaceId/projects",
+  requireAuth,
+  requireWorkspaceMemberRole,
+  projectRouter
+);
+
+// DELETE, PATCH (delete, update) — ADMIN or OWNER only
+// these must be defined BEFORE the general mount above so Express matches
+// the more specific route + method combination first
+app.delete(
+  "/workspaces/:workspaceId/projects/:id",
+  requireAuth,
+  requireWorkspaceRole("ADMIN"),
+  projectRouter
+);
+
+app.patch(
+  "/workspaces/:workspaceId/projects/:id",
+  requireAuth,
+  requireWorkspaceRole("ADMIN"),
+  projectRouter
+);
+
+export default app;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 This entire segment was written at the start of the program to understand express.

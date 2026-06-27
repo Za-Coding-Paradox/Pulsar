@@ -2,9 +2,8 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Constants } from ".././globals/constants.js";
 import StatusCodes from ".././globals/status_codes.js";
-import { PrismaClient, Prisma } from "../.././generated/prisma/client.js";
-
-const PRISMA_CLIENT = new PrismaClient();
+import { Prisma } from "../.././generated/prisma/index.js";
+import prisma from ".././lib/prisma.js";
 
 // Added the "async" keyword here so we can use "await" inside
 async function requireWorkspaceMemberRole(
@@ -35,7 +34,7 @@ async function requireWorkspaceMemberRole(
 		} 
 
 		// "findFirst" because you are searching by a nested relationship (workspace name)
-		const checkWorkspaceMember = await PRISMA_CLIENT.workspaceMember.findFirst({
+		const checkWorkspaceMember = await prisma.workspaceMember.findFirst({
 			where: {
 				userId: userId,
 				workspace: {
