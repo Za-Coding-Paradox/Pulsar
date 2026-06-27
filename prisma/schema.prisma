@@ -62,7 +62,7 @@ model WorkspaceMember {
   userId      String
 
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  workspaceId String
+  workspaceId String 
 
   @@unique([userId, workspaceId])
 }

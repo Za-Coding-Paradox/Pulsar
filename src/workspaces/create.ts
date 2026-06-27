@@ -85,7 +85,6 @@ ROUTER.post("/", async(request, result) => {
 			console.error("Unexpected Error Occured in Signup", error);
 			return result.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Workspace Creation Failed for Unexpected Reasons" });
 		}
-	
 	}
 });
 
