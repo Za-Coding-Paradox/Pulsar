@@ -5,7 +5,7 @@ import { z } from "zod";
 import StatusCodes from "../globals/status_codes.js";
 import prisma from "../lib/prisma.js";
 
-const ROUTER = Router();
+const ROUTER = Router({ mergeParams: true });
 
 const createProjectSchema = z.object({
 	name: z.string().min(1).max(100),

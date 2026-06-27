@@ -23,7 +23,7 @@ async function requireWorkspaceMemberRole(
 		} // check for TS compiler to allow search in PrismaClient "findFirst"
 		// this ensures that userId does exist, and is not undefined
 
-		const workspaceId = request.body.id; 
+		const workspaceId = request.params.workspaceId as string; // ← from URL params
 		if (!workspaceId) {
 			response 
 			.status(StatusCodes.INVALID_WORKSPACE_GET_REQUEST)
@@ -36,10 +36,8 @@ async function requireWorkspaceMemberRole(
 		// "findFirst" because you are searching by a nested relationship (workspace name)
 		const checkWorkspaceMember = await prisma.workspaceMember.findFirst({
 			where: {
-				userId: userId,
-				workspace: {
-					id: workspaceId
-				},
+				userId,
+				workspaceId, // direct field, no nesting needed
 			},
 		});
 

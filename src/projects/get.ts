@@ -11,7 +11,7 @@ interface ProjectParams {
   id: string;
 }
 
-const ROUTER = Router();
+const ROUTER = Router({ mergeParams: true });
 
 ROUTER.get("/:id", async (request: Request<ProjectParams>, result) => {
 	try {

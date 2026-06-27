@@ -4,7 +4,7 @@ import type { Request } from "express";
 import StatusCodes from "../globals/status_codes.js";
 import prisma from "../lib/prisma.js";
 
-const ROUTER = Router();
+const ROUTER = Router({ mergeParams: true });
 
 interface ProjectDeleteParams {
 	workspaceId: string;

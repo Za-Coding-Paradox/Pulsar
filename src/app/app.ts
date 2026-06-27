@@ -33,7 +33,6 @@ app.delete(
 app.use(
   "/workspaces/:workspaceId/projects",
   requireAuth,
-  requireWorkspaceMemberRole,
   projectRouter
 );
 
